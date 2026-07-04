@@ -433,11 +433,9 @@ exports.importBatch = async (req, res) => {
 
     log(`📦 Import en lot depuis le fichier : ${req.file.originalname} (${req.file.size} bytes)`);
 
-    // Lecture et parsing
     const content = req.file.buffer.toString();
     let importData = JSON.parse(content);
 
-    // Extraction du tableau de factures
     let invoicesArray = [];
     if (importData.invoices && Array.isArray(importData.invoices)) {
       invoicesArray = importData.invoices;
@@ -449,45 +447,32 @@ exports.importBatch = async (req, res) => {
 
     log(`📊 ${invoicesArray.length} factures à traiter`);
 
-    // Traitement en lots avec transaction
     const results = [];
     let successCount = 0;
     let errorCount = 0;
 
-    for (let i = 0; i < invoicesArray.length; i += BATCH_SIZE) {
-      const batch = invoicesArray.slice(i, Math.min(i + BATCH_SIZE, invoicesArray.length));
-      log(`   📦 Lot ${Math.floor(i / BATCH_SIZE) + 1}: ${batch.length} factures`);
-
-      // Traitement du lot avec transaction
-      const batchResults = await sequelize.transaction(async (t) => {
-        const batchResultsInner = [];
-        for (const invData of batch) {
-          try {
-            const result = await processSingleInvoiceImport(invData, t);
-            batchResultsInner.push({
-              success: true,
-              invoiceNumber: invData.invoiceNumber || 'inconnu',
-              result: {
-                updated: result.updated,
-                duration: result.duration
-              }
-            });
-            successCount++;
-          } catch (err) {
-            logError(`   ❌ Échec facture ${invData.invoiceNumber || 'inconnue'}`, err);
-            batchResultsInner.push({
-              success: false,
-              invoiceNumber: invData.invoiceNumber || 'inconnu',
-              error: err.message
-            });
-            errorCount++;
+    // Traitement SANS transaction
+    for (const invData of invoicesArray) {
+      try {
+        const result = await processSingleInvoiceImport(invData, null);
+        results.push({
+          success: true,
+          invoiceNumber: invData.invoiceNumber || 'inconnu',
+          result: {
+            updated: result.updated,
+            duration: result.duration
           }
-        }
-        return batchResultsInner;
-      });
-
-      results.push(...batchResults);
-      log(`   ✅ Lot terminé : ${batchResults.filter(r => r.success).length} réussis`);
+        });
+        successCount++;
+      } catch (err) {
+        logError(`   ❌ Échec facture ${invData.invoiceNumber || 'inconnue'}`, err);
+        results.push({
+          success: false,
+          invoiceNumber: invData.invoiceNumber || 'inconnu',
+          error: err.message
+        });
+        errorCount++;
+      }
     }
 
     const duration = Date.now() - startTime;
@@ -503,13 +488,11 @@ exports.importBatch = async (req, res) => {
       },
       results
     });
-
   } catch (error) {
     logError('Erreur importBatch', error);
-    res.status(500).json({ 
-      error: 'Erreur lors de l\'import en lot', 
-      details: error.message 
+    res.status(500).json({
+      error: 'Erreur lors de l\'import en lot',
+      details: error.message
     });
   }
-
 };
