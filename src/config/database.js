@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 // config/database.js
 const { Sequelize } = require('sequelize');
 const dotenv = require('dotenv');
@@ -126,5 +126,4 @@ module.exports = {
   sequelize,
   testConnection,
   syncDatabase
->>>>>>> c90dfa826fa04030f95bdcd2433429c62d674c63
 };
