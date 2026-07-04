@@ -1,0 +1,168 @@
+<<<<<<< HEAD
+-- ============================================================
+-- Base de données : ibs_database
+-- Tables pour IBS Services
+-- ============================================================
+
+-- Suppression des tables si elles existent (pour réinitialisation)
+-- ATTENTION : supprime les données existantes
+-- DROP TABLE IF EXISTS invoice_items;
+-- DROP TABLE IF EXISTS invoices;
+-- DROP TABLE IF EXISTS products;
+-- DROP TABLE IF EXISTS clients;
+
+-- ------------------------------------------------------------
+-- Table clients
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS clients (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(50) NOT NULL,
+    address TEXT NOT NULL,
+    company VARCHAR(255) DEFAULT NULL,
+    tva_number VARCHAR(50) DEFAULT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- Table products
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS products (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT DEFAULT NULL,
+    unit_price DECIMAL(10,2) NOT NULL,
+    unit VARCHAR(50) NOT NULL DEFAULT 'unité',
+    tva_rate DECIMAL(5,2) NOT NULL DEFAULT 20.0,
+    is_active TINYINT(1) NOT NULL DEFAULT 1,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- Table invoices
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS invoices (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    invoice_number VARCHAR(50) NOT NULL UNIQUE,
+    client_id INT NOT NULL,
+    tva_rate DECIMAL(5,2) NOT NULL DEFAULT 20.0,
+    status ENUM('payée', 'impayée', 'partielle') NOT NULL DEFAULT 'impayée',
+    payment_terms VARCHAR(255) NOT NULL DEFAULT 'Paiement sous 30 jours',
+    notes TEXT DEFAULT NULL,
+    signature_image_path VARCHAR(500) DEFAULT NULL,
+    amount_paid DECIMAL(10,2) NOT NULL DEFAULT 0.0,
+    currency_symbol VARCHAR(10) NOT NULL DEFAULT 'CDF',
+    invoice_date DATETIME NOT NULL,
+    due_date DATETIME DEFAULT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- Table invoice_items
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS invoice_items (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    invoice_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    description TEXT DEFAULT NULL,
+    quantity DECIMAL(10,2) NOT NULL DEFAULT 1.0,
+    unit_price DECIMAL(10,2) NOT NULL,
+    unit VARCHAR(50) NOT NULL DEFAULT 'unité',
+    tva_rate DECIMAL(5,2) NOT NULL DEFAULT 20.0,
+    FOREIGN KEY (invoice_id) REFERENCES invoices(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- Index pour optimiser les performances
+-- ------------------------------------------------------------
+CREATE INDEX idx_invoices_client_id ON invoices(client_id);
+CREATE INDEX idx_invoices_invoice_date ON invoices(invoice_date);
+CREATE INDEX idx_invoices_status ON invoices(status);
+CREATE INDEX idx_invoice_items_invoice_id ON invoice_items(invoice_id);
+=======
+-- ============================================================
+-- Base de données : ibs_database
+-- Tables pour IBS Services
+-- ============================================================
+
+-- Suppression des tables si elles existent (pour réinitialisation)
+-- ATTENTION : supprime les données existantes
+-- DROP TABLE IF EXISTS invoice_items;
+-- DROP TABLE IF EXISTS invoices;
+-- DROP TABLE IF EXISTS products;
+-- DROP TABLE IF EXISTS clients;
+
+-- ------------------------------------------------------------
+-- Table clients
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS clients (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(50) NOT NULL,
+    address TEXT NOT NULL,
+    company VARCHAR(255) DEFAULT NULL,
+    tva_number VARCHAR(50) DEFAULT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- Table products
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS products (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT DEFAULT NULL,
+    unit_price DECIMAL(10,2) NOT NULL,
+    unit VARCHAR(50) NOT NULL DEFAULT 'unité',
+    tva_rate DECIMAL(5,2) NOT NULL DEFAULT 20.0,
+    is_active TINYINT(1) NOT NULL DEFAULT 1,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- Table invoices
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS invoices (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    invoice_number VARCHAR(50) NOT NULL UNIQUE,
+    client_id INT NOT NULL,
+    tva_rate DECIMAL(5,2) NOT NULL DEFAULT 20.0,
+    status ENUM('payée', 'impayée', 'partielle') NOT NULL DEFAULT 'impayée',
+    payment_terms VARCHAR(255) NOT NULL DEFAULT 'Paiement sous 30 jours',
+    notes TEXT DEFAULT NULL,
+    signature_image_path VARCHAR(500) DEFAULT NULL,
+    amount_paid DECIMAL(10,2) NOT NULL DEFAULT 0.0,
+    currency_symbol VARCHAR(10) NOT NULL DEFAULT 'CDF',
+    invoice_date DATETIME NOT NULL,
+    due_date DATETIME DEFAULT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- Table invoice_items
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS invoice_items (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    invoice_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    description TEXT DEFAULT NULL,
+    quantity DECIMAL(10,2) NOT NULL DEFAULT 1.0,
+    unit_price DECIMAL(10,2) NOT NULL,
+    unit VARCHAR(50) NOT NULL DEFAULT 'unité',
+    tva_rate DECIMAL(5,2) NOT NULL DEFAULT 20.0,
+    FOREIGN KEY (invoice_id) REFERENCES invoices(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- Index pour optimiser les performances
+-- ------------------------------------------------------------
+CREATE INDEX idx_invoices_client_id ON invoices(client_id);
+CREATE INDEX idx_invoices_invoice_date ON invoices(invoice_date);
+CREATE INDEX idx_invoices_status ON invoices(status);
+CREATE INDEX idx_invoice_items_invoice_id ON invoice_items(invoice_id);
+>>>>>>> c90dfa826fa04030f95bdcd2433429c62d674c63
+CREATE INDEX idx_products_is_active ON products(is_active);
