@@ -62,7 +62,7 @@ module.exports = {
   sequelize,
   testConnection,
   syncDatabase
-=======
+    
 // config/database.js
 const { Sequelize } = require('sequelize');
 const dotenv = require('dotenv');
