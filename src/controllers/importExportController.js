@@ -4,6 +4,7 @@
 // Avec gestion des transactions, logs détaillés et traitements par lots
 
 const { Invoice, Client, InvoiceItem, sequelize } = require('../models');
+const sequelize = require('../config/database').sequelize;
 const { Op } = require('sequelize');
 const fs = require('fs').promises;
 const path = require('path');
