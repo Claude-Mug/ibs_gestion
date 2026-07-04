@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 -- ============================================================
 -- Base de données : ibs_database
 -- Tables pour IBS Services
@@ -164,5 +164,4 @@ CREATE INDEX idx_invoices_client_id ON invoices(client_id);
 CREATE INDEX idx_invoices_invoice_date ON invoices(invoice_date);
 CREATE INDEX idx_invoices_status ON invoices(status);
 CREATE INDEX idx_invoice_items_invoice_id ON invoice_items(invoice_id);
->>>>>>> c90dfa826fa04030f95bdcd2433429c62d674c63
 CREATE INDEX idx_products_is_active ON products(is_active);
