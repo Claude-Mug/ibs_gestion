@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # ============================================================
 # Configuration du serveur
 # ============================================================
@@ -31,22 +31,5 @@ PORT=3000
 NODE_ENV=development
 
 # ============================================================
-# Configuration de la base de données (ANCIENNE COMPATIBILITÉ XAMPP)
-# ============================================================
- DB_HOST=localhost
- DB_USER=root
- DB_PASSWORD=
- DB_NAME=ibs_database
- DB_PORT=3306
 
-# ============================================================
-# Sécurité - JWT (pour l'authentification)
-# ============================================================
-JWT_SECRET=ibs_services_secret_key_2026
-JWT_EXPIRE=7d
-
-# ============================================================
-# Configuration du CORS (pour les requêtes depuis Flutter)
-# ============================================================
->>>>>>> c90dfa826fa04030f95bdcd2433429c62d674c63
 CORS_ORIGIN=*
