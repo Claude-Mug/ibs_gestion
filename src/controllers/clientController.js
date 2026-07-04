@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 // controllers/clientController.js
 const { Client } = require('../models');
 
@@ -250,5 +250,4 @@ exports.deleteClient = async (req, res) => {
     console.error('Erreur deleteClient:', error);
     res.status(500).json({ error: 'Erreur lors de la suppression du client' });
   }
->>>>>>> c90dfa826fa04030f95bdcd2433429c62d674c63
 };
