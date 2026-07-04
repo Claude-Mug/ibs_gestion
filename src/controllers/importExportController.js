@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 // controllers/importExportController.js
 // Contrôleur d'import/export optimisé pour la production
 // Avec gestion des transactions, logs détaillés et traitements par lots
@@ -510,7 +510,6 @@ exports.importBatch = async (req, res) => {
       details: error.message 
     });
   }
-=======
 // controllers/importExportController.js
 // Contrôleur d'import/export optimisé pour la production
 // Avec gestion des transactions, logs détaillés et traitements par lots
@@ -1022,5 +1021,4 @@ exports.importBatch = async (req, res) => {
       details: error.message 
     });
   }
->>>>>>> c90dfa826fa04030f95bdcd2433429c62d674c63
 };
