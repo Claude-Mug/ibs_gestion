@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // server.js - Point d'entrée du serveur optimisé
 const express = require('express');
 const cors = require('cors');
