@@ -294,8 +294,6 @@ process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 
 startServer();
-
-=======
 // server.js - Point d'entrée du serveur optimisé
 const express = require('express');
 const cors = require('cors');
@@ -592,6 +590,4 @@ process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 
 startServer();
-
->>>>>>> c90dfa826fa04030f95bdcd2433429c62d674c63
 module.exports = app;
