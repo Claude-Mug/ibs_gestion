@@ -1,6 +1,6 @@
 
 // models/index.js
-const { sequelize } = require('../config/database')
+const { sequelize } = require('../config/database');
 
 // models/index.js - Point d'entrée pour les associations
 const Client = require('./Client');
