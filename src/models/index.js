@@ -37,6 +37,7 @@ InvoiceItem.belongsTo(Invoice, {
 // (Optionnel) Un InvoiceItem pourrait être lié à un Product, mais ce n'est pas requis
 
 module.exports = {
+  sequelize,
   Client,
   Product,
   Invoice,
